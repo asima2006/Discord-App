@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController')
+const authController = require('../controllers/auth/authController')
 const Joi = require('joi');
 const validator = require('express-joi-validation').createValidator({});
 const auth = require('../middleware/auth');

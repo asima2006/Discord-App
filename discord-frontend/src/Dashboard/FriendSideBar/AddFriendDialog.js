@@ -8,14 +8,21 @@ import DialogContentText from "@mui/material/DialogContentText";
 import InputwithLabelWise from "../../shared/components/InputwithLabelWise";
 import Typography from "@mui/material/Typography";
 import CustomPrimaryButton from "../../shared/components/customPrimaryButton";
+import { connect} from 'react-redux'
+import { getAction } from "../../store/actions/friendsAction";
 
-const AddFriendDialog = ({ isDialogOpen, closeDialogHandler,
-    sendFriendInvitation = () => { } }) => {
+const AddFriendDialog = ({
+    isDialogOpen,
+    closeDialogHandler,
+    sendFriendInvitation = () => {}
+}) => {
     const [mail, setMail] = useState("");
     const [isFormValid, setIsFormValid] = useState("");
 
     const handleSendInvitation = () => {
-        // set messsage to server
+        sendFriendInvitation({
+            targetMailAddress: mail,
+        })
     };
 
     const handleCloseDialog = () => {
@@ -31,15 +38,15 @@ const AddFriendDialog = ({ isDialogOpen, closeDialogHandler,
         <div>
             <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
                 <DialogTitle>
-                    <Typography>Invite a Friend</Typography>
+                    <Typography component={'span'}>Invite a Friend</Typography>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        <Typography>
+                        <Typography component={'span'}>
                             Enter a email-address of friend which you would like to invite
                         </Typography>
                     </DialogContentText>
-                    <InputwithLabelWise 
+                    <InputwithLabelWise
                         label="Mail"
                         type='text'
                         value={mail}
@@ -53,9 +60,9 @@ const AddFriendDialog = ({ isDialogOpen, closeDialogHandler,
                         disabled={!isFormValid}
                         label='Send'
                         additionalStyles={{
-                            marginLeft:'15px',
-                            marginRight:'15px',
-                            marginBottom:'10px',
+                            marginLeft: '15px',
+                            marginRight: '15px',
+                            marginBottom: '10px',
                         }}
                     />
                 </DialogActions>
@@ -64,4 +71,10 @@ const AddFriendDialog = ({ isDialogOpen, closeDialogHandler,
     );
 };
 
-export default AddFriendDialog;
+const mapActionToprops = (dispatch) => {
+    return {
+        ...getAction(dispatch)
+    }
+}
+
+export default connect(null, mapActionToprops)(AddFriendDialog);

@@ -3,5 +3,5 @@ const postRegister = require('./postRegister');
 
 exports.Controller = {
     postLogin,
-    postRegister
+    postRegister,
 }

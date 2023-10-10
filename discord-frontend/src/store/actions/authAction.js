@@ -10,15 +10,15 @@ export const getActions = (dispatch) => {
         login: (userDetails, history) => dispatch(login(userDetails, history)),
         register: (userDetails, history) => dispatch(register(userDetails, history)),
         setUserDetails: (userDetails) => dispatch(setUserDetails(userDetails))
-    }
-}
+    };
+};
 
 const setUserDetails = (userDetails) => {
     return {
         type: authAction.SET_USER_DETAILS,
         userDetails,
-    }
-}
+    };
+};
 
 const login = (userDetails, history) => {
     return async (dispatch) => {
@@ -32,14 +32,13 @@ const login = (userDetails, history) => {
 
             dispatch(setUserDetails(userDetails));
             history('/dashboard');
-        }
-    }
-}
+        };
+    };
+};
 
 const register = (userDetails, history) => {
     return async (dispatch) => {
         const response = await api.register(userDetails);
-        // console.log(response);
         if (response.error) {
             dispatch(openAlertMessage(response?.exception?.response?.data))
         } else{
@@ -48,6 +47,6 @@ const register = (userDetails, history) => {
 
             dispatch(setUserDetails(userDetails));
             history('/dashboard');
-        }
-    }
-}
+        };
+    };
+};
