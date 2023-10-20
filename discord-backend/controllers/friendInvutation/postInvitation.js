@@ -1,5 +1,6 @@
 const User = require('../../models/user');
-const FriendInvitation = require('../../models/friendInvitation')
+const FriendInvitation = require('../../models/friendInvitation');
+const friendsUpdate = require('../../socketHandler/updates/friends');
 
 const postInvitation = async (req, res) => {
     try {
@@ -16,6 +17,7 @@ const postInvitation = async (req, res) => {
             mail: targetMailAddress.toLowerCase(),
         });
         // console.log(targetUser);
+        console.log(targetUser._id);
 
         if (!targetUser) {
             return res.status(404).send(`Friend with e-mail addresss ${targetMailAddress} has not found. Please check e-mail address`)
@@ -43,6 +45,9 @@ const postInvitation = async (req, res) => {
             senderId: uesrId,
             receiverId: targetUser._id,
         });
+
+        friendsUpdate.updateFriendsPendingInvitations(targetUser._id.toString());
+
 
         return res.status(201).send("Invitation has been sent");
     }

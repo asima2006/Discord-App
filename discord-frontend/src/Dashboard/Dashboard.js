@@ -13,12 +13,11 @@ const Wrapper = styled('div')({
   width: '100%',
   height: '100vh',
   display: 'flex',
-})
+});
 
 const Dashboard = ({setUserDetails}) => {
   useEffect(()=>{
-    const userDetails = localStorage.getItem('user')
-
+    const userDetails = localStorage.getItem('user');
     if (!userDetails) {
       logout();
     } else {

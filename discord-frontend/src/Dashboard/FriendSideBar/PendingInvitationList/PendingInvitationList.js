@@ -1,23 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import PendingInvitationListItem from './PendingInvitationListItem'
-
-const DUMMY_INVITATION = [
-  {
-    _id: 1,
-    senderId: {
-      username: 'Rahul',
-      mail: 'dummy@123.mail'
-    }
-  },
-  {
-    _id: 2,
-    senderId: {
-      username: 'Mark',
-      mail: 'mark@123.mail'
-    }
-  }
-]
+import { connect } from 'react-redux'
 
 const MainContainer = styled('div')({
     width: '100%',
@@ -28,10 +12,10 @@ const MainContainer = styled('div')({
     overflow: 'auto',
 })
 
-const PendingInvitationList = () => {
+const PendingInvitationList = ({pendingFriendsInvitations}) => {
   return (
     <MainContainer>
-      {DUMMY_INVITATION.map((invitation) =>(
+      {pendingFriendsInvitations.map((invitation) =>(
         <PendingInvitationListItem
           key={invitation._id}
           id={invitation._id}
@@ -41,6 +25,12 @@ const PendingInvitationList = () => {
       ))}
     </MainContainer>
   )
+};
+
+const mapStoreStateToProps = ({ friends }) => {
+  return {
+    ...friends,
+  };
 }
 
-export default PendingInvitationList
+export default connect(mapStoreStateToProps)(PendingInvitationList)

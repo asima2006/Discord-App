@@ -1,37 +1,26 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import FriendListItem from './FriendListItem'
-
-const DUMMY_FRIENDS = [
-  {
-    id: '1',
-    username: 'Mohit',
-    isOnline: true
-  },
-
-  {
-    id: '2',
-    username: 'Rohit',
-    isOnline: false
-  },
-
-  {
-    id: '3',
-    username: 'Kartik',
-    isOnline: true
-  },
-
-]
+import { connect } from 'react-redux'
 
 const MainContainer = styled('div')({
   flexGrow: 1,
   width: '100%'
 })
 
-const FriendList = () => {
+const checkOnlineUsers = (friends = [], onlineUsers = []) => {
+  friends.forEach((f) => {
+    const isUserOnline = onlineUsers.find((user) => user.userId === f.id);
+    f.isOnline = isUserOnline ? true : false;
+  });
+
+  return friends;
+};
+
+const FriendList = ({friends, onlineUsers}) => {
   return (
     <MainContainer>
-      {DUMMY_FRIENDS.map((f) => (
+      {checkOnlineUsers(friends, onlineUsers).map((f) => (
         <FriendListItem
           username={f.username}
           id={f.id}
@@ -40,7 +29,13 @@ const FriendList = () => {
         />
       ))}
     </MainContainer>
-  )
-}
+  );
+};
 
-export default FriendList
+const mapStateToProps = ({friends}) => {
+  return{
+    ...friends,
+  };
+};
+
+export default connect(mapStateToProps)(FriendList) 

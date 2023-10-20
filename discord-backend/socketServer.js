@@ -4,29 +4,40 @@ const disconnectHandler = require('./socketHandler/disconnecthandler');
 const serverStore = require('./serverStore');
 
 const registerSocketServer = (server) => {
-    const io = require("socket.io")(server, {
-        cors: {
-            origin: "*",
-            methods: ["GET", "POST"],
-        },
+  const io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
+
+  serverStore.setSocketServerInstance(io);
+
+  io.use((socket, next) => {
+    authSocket(socket, next);
+  });
+
+  const emitOnlineUsers = () => {
+    const onlineUsers = serverStore.getOnlineUsers();
+    io.emit('onlineUsers',{ onlineUsers });
+  }
+
+  io.on("connection", (socket) => {
+
+    console.log("user connected");
+    console.log(socket.id);
+
+    newConnectionHandler(socket, io);
+    emitOnlineUsers()
+
+    socket.on("disconnect", () => {
+      disconnectHandler(socket);
     });
+  });
 
-    serverStore.setSocketServerInstance(io);
+  setInterval(() => {
+    emitOnlineUsers();
+  }, [1000 * 8]);
+}
 
-    io.use((socket, next) => {
-        authSocket(socket, next);
-      });
-
-    io.on('connection', (socket)=>{
-        console.log("User Connected");
-        console.log(socket.id);
-        // console.log(socket);
-        newConnectionHandler(socket, io);
-
-        socket.on('disconnect', ()=>{
-            disconnectHandler(socket);
-        })
-    });
-};
-
-module.exports = {registerSocketServer};
+module.exports = { registerSocketServer };
