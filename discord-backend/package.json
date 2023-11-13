@@ -21,7 +21,8 @@
     "mongodb": "^6.0.0",
     "mongoose": "^7.5.0",
     "nodemon": "^3.0.1",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/socket.io": "^3.0.2"
